@@ -1,0 +1,117 @@
+var health = 1;
+var attack = 1;
+var defense = 1;
+var hasplayerdefended = false;
+var turn = 3;
+var enemyhealth = 125;
+var enemyattack = 35;
+onEvent("FightScreen", "click", function( ) {
+  if (health <= 0) {
+    turn = 0;
+    setProperty("CharacterName", "text", "You Lose!");
+  }
+  if (turn == 3) {
+    setProperty("defendtext", "text", "You can defend.");
+  } else {
+    setProperty("defendtext", "text", "You cannot defend.");
+  }
+});
+onEvent("STARTBUTTON", "click", function( ) {
+  setScreen("CharacterSelect");
+  setProperty("EnemyHealth", "text", enemyhealth);
+  playSound("sound://category_digital/startup.mp3", false);
+});
+onEvent("Victor", "click", function( ) {
+  playSound("sound://category_tap/vibrant_power_orb_touch_1.mp3", false);
+  playSpeech("Victor", "male", "English");
+  playSound("sound://category_transition/star_dust_particle_transition_4.mp3", false);
+  health = 100;
+  attack = 25;
+  defense = 10;
+  setScreen("FightScreen");
+  setProperty("CharacterName", "text", "Victor");
+  setProperty("Health", "text", health);
+});
+onEvent("EvilVictor", "click", function( ) {
+  playSound("sound://category_tap/vibrant_power_orb_touch_1.mp3", false);
+  playSpeech("Evil Victor", "male", "English");
+  playSound("sound://category_transition/star_dust_particle_transition_4.mp3", false);
+  health = 100;
+  attack = 25;
+  defense = 10;
+  setScreen("FightScreen");
+  setProperty("CharacterName", "text", "Evil Victor");
+  setProperty("Health", "text", health);
+});
+onEvent("Hector", "click", function( ) {
+  playSound("sound://category_tap/vibrant_power_orb_touch_1.mp3", false);
+  playSpeech("Hector", "male", "English");
+  playSound("sound://category_transition/star_dust_particle_transition_4.mp3", false);
+  health = 125;
+  attack = 30;
+  defense = 0;
+  setScreen("FightScreen");
+  setProperty("CharacterName", "text", "Hector");
+  setProperty("Health", "text", health);
+});
+onEvent("Vector", "click", function( ) {
+  playSound("sound://category_tap/vibrant_power_orb_touch_1.mp3", false);
+  playSpeech("Vector", "male", "English");
+  playSound("sound://category_transition/star_dust_particle_transition_4.mp3", false);
+  health = 150;
+  attack = 11;
+  defense = 15;
+  setScreen("FightScreen");
+  setProperty("CharacterName", "text", "Vector");
+  setProperty("Health", "text", health);
+});
+onEvent("Ramon", "click", function( ) {
+  playSound("sound://category_tap/vibrant_power_orb_touch_1.mp3", false);
+  playSpeech("Ramon", "male", "English");
+  playSound("sound://category_transition/star_dust_particle_transition_4.mp3", false);
+  health = 200;
+  attack = 50;
+  defense = 15;
+  setScreen("FightScreen");
+  setProperty("CharacterName", "text", "Ramon");
+  setProperty("Health", "text", health);
+});
+onEvent("AttackButton", "click", function( ) {
+  if (turn < 3) {
+    turn = turn + 1;
+  }
+  if (health > 0) {
+    enemyhealth = enemyhealth - attack;
+    hasplayerdefended = false;
+    if (enemyhealth <= 0) {
+      setProperty("CharacterName", "text", "You Win!");
+      setProperty("EnemyHealth", "text", enemyhealth);
+    } else {
+      if (enemyattack === 35) {
+        health = health - (enemyattack - defense);
+      } else {
+        enemyattack = 35;
+      }
+      setProperty("Health", "text", health);
+      setProperty("EnemyHealth", "text", enemyhealth);
+    }
+  }
+});
+onEvent("Defend", "click", function( ) {
+  if (turn == 3) {
+    turn = 0;
+    if (enemyhealth <= 0) {
+      setProperty("CharacterName", "text", "You Win!");
+    } else {
+      enemyattack = enemyattack-20;
+      health = health - (enemyattack - defense);
+      setProperty("Health", "text", health);
+    }
+  }
+});
+onEvent("QuitButton", "click", function( ) {
+  setScreen("StartScreen");
+  enemyhealth = 125;
+  enemyattack = 35;
+  turn = 3;
+});
